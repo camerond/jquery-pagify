@@ -6,6 +6,11 @@
         @$el.append($("<div />").text("Item Number #{i}"))
     checkActivePage: (page) ->
       @$el.data("pagify").$controls.find(".pagify_active").shouldHaveText(page)
+    checkControls: (str) ->
+      ok true, "Checking controls for #{str}"
+      controls = str.split(',')
+      @$el.data('pagify').$controls.find(".pagify_page:visible, .pagify_spacer:visible").each (i) ->
+        $(this).shouldHaveText("#{controls[i]}")
     checkItems: (str) ->
       ok true, "Checking for items #{str}"
       items = str.split(',')
@@ -21,7 +26,7 @@
     @
 
   $.fn.shouldHaveText = (text) ->
-    equal @.text(), text, "#{text} is displayed within #{@.selector}"
+    equal @.text(), text, "#{text} is displayed within #{@.attr('class')}"
     @
 
   test "it is chainable", ->
@@ -94,6 +99,26 @@
     )
     $t.prev().shouldBe(".pagify_controls")
     $t.next().shouldBe(".pagify_controls")
+
+  test "set max pages displayed in controls", ->
+    $t = tester.init(
+      per_page: 2
+      control_window: 2
+    )
+    tester.checkControls('1,2,3,...,10')
+    $t.data("pagify").navigateTo(5)
+    tester.checkControls('1,...,3,4,5,6,7,...,10')
+    $t.data("pagify").navigateTo(9)
+    tester.checkControls('1,...,7,8,9,10')
+
+  test "make sure control_window doesn't break on small page amounts", ->
+    $t = tester.init(
+      per_page: 7
+      control_window: 2
+    )
+    tester.checkControls('1,2,3')
+    $t.data("pagify").navigateTo(2)
+    tester.checkControls('1,2,3')
 
   module "Methods"
 

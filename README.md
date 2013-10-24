@@ -32,6 +32,10 @@ $("#page_container").pagify({
   prev_label: 'prev'          // button text
   current_page: 1             // starting page
   per_page: 5                 // items per page
+  control_window: 0
+  // `control_window` sets the number of page number buttons to display
+  // on either side of the active element (0 shows all).
+  // Outputs <li class="pagify_spacer">...</li> in place of other controls.
 });
 ```
 

@@ -34,6 +34,7 @@
     prev_label: 'prev'
     current_page: 1
     per_page: 5
+    control_window: 0
     getAllControls: ->
       $c = @$controls
       @$secondary_controls && $c.add(@$secondary_controls)
@@ -51,18 +52,33 @@
       for i in [1..@total_pages]
         $ul.append($("<li class='#{@name}_page'><a href='#'>#{i}</a></li>"))
       if @append_controls == 'both'
-        @$el.after(@$controls)
-        @$secondary_controls = @$controls.clone(true)
-        @$el.before(@$secondary_controls)
+        @$el.before(@$controls)
+        @cloneControls()
       else
         @$el[@append_controls](@$controls)
+    cloneControls: ->
+      @$secondary_controls && @$secondary_controls.off(".#{p.name}").remove()
+      @$secondary_controls = @$controls.clone(true)
+      @$el.after(@$secondary_controls)
+    collapseControls: ->
+      @getAllControls().find(".#{@name}_spacer").remove()
+      $page_buttons = @$controls.find(".#{@name}_page").hide()
+      idx = @$controls.find(".#{@name}_active").index()
+      slice_from = if idx - @control_window > 0 then idx - @control_window - 1 else 0
+      slice_to = idx + @control_window
+      $shown_buttons = $page_buttons.slice(slice_from, slice_to).show()
+      $page_buttons.first().show().end().last().show()
+      $spacer = $("<li class='#{@name}_spacer'><a href='#'>...</a></li>");
+      $shown_buttons.prev().is(":hidden") && $shown_buttons.first().before($spacer.clone())
+      $shown_buttons.next().is(":hidden") && $shown_buttons.last().after($spacer.clone())
+      @$secondary_controls && @cloneControls()
     createNextPrev: ->
       @$next = $("<li />")
         .addClass("#{@name}_next")
-        .append($("<a />"), text: @next_label)
+        .append($("<a />").text(@next_label))
       @$prev = $("<li />")
         .addClass("#{@name}_prev")
-        .append($("<a />"), text: @prev_label)
+        .append($("<a />").text(@prev_label))
       @$controls.find("ul").append(@$next).prepend(@$prev)
     navigateTo: (page) ->
       idx = @per_page * (page - 1)
@@ -73,6 +89,7 @@
         .children().hide()
         .slice(idx, idx + @per_page).show()
       @current_page = page
+      @control_window && @collapseControls()
     clickPage: (e) ->
       e.stopPropagation()
       @navigateTo($(e.target).text())
