@@ -12,6 +12,7 @@ A `<nav>` element containing a `<ul>` to navigate through the pages will be inse
 
 ```javascript
 $("#page_container").pagify({
+  show_pagecontrols: true                   // show links for each page number in pagination controls
   show_nextprev: true                       // show 'next' and 'prev' buttons in addition to page number buttons
   next_label: 'next'                        // button text
   prev_label: 'prev'                        // button text

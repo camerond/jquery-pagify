@@ -27,6 +27,7 @@
 
   pagify =
     name: 'pagify'
+    show_pagecontrols: true
     show_nextprev: true
     next_label: 'next'
     prev_label: 'prev'
@@ -79,7 +80,7 @@
       p.init()
     init: ->
       @total_pages = @countPages()
-      @createControls()
+      @show_pagecontrols && @createControls()
       @show_nextprev && @createNextPrev()
       @addEvents()
       @navigateTo(@current_page)
