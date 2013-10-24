@@ -12,13 +12,13 @@ A `<nav>` element containing a `<ul>` to navigate through the pages will be inse
 
 ```javascript
 $("#page_container").pagify({
-  append_controls: 'after'                  // where to append pagination controls - 'before', 'after' or 'both'
-  show_pagecontrols: true                   // show links for each page number in pagination controls
-  show_nextprev: true                       // show 'next' and 'prev' buttons in addition to page number buttons
-  next_label: 'next'                        // button text
-  prev_label: 'prev'                        // button text
-  current_page: 1                           // starting page
-  per_page: 5                               // items per page
+  append_controls: 'after'    // where to append controls - 'before', 'after' or 'both'
+  show_pagecontrols: true     // show page number controls
+  show_nextprev: true         // show 'next' and 'prev' buttons
+  next_label: 'next'          // button text
+  prev_label: 'prev'          // button text
+  current_page: 1             // starting page
+  per_page: 5                 // items per page
 });
 ```
 
