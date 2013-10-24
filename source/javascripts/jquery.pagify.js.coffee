@@ -68,7 +68,7 @@
       slice_to = idx + @control_window
       $shown_buttons = $page_buttons.slice(slice_from, slice_to).show()
       $page_buttons.first().show().end().last().show()
-      $spacer = $("<li class='#{@name}_spacer'><a href='#'>...</a></li>");
+      $spacer = $("<li class='#{@name}_spacer'>...</li>");
       $shown_buttons.prev().is(":hidden") && $shown_buttons.first().before($spacer.clone())
       $shown_buttons.next().is(":hidden") && $shown_buttons.last().after($spacer.clone())
       @$secondary_controls && @cloneControls()
