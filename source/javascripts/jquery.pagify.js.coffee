@@ -27,14 +27,19 @@
 
   pagify =
     name: 'pagify'
+    append_controls: 'after'
     show_pagecontrols: true
     show_nextprev: true
     next_label: 'next'
     prev_label: 'prev'
     current_page: 1
     per_page: 5
+    getAllControls: ->
+      $c = @$controls
+      @$secondary_controls && $c.add(@$secondary_controls)
+      $c
     addEvents: ->
-      @$controls
+      @getAllControls()
         .on('click', ".#{@name}_next a", $.proxy(@goNext, @))
         .on('click', ".#{@name}_prev a", $.proxy(@goPrev, @))
         .on('click', ".#{@name}_page a", $.proxy(@clickPage, @))
@@ -45,7 +50,12 @@
       $ul = @$controls.find("ul")
       for i in [1..@total_pages]
         $ul.append($("<li class='#{@name}_page'><a href='#'>#{i}</a></li>"))
-      @$el.after(@$controls)
+      if @append_controls == 'both'
+        @$el.after(@$controls)
+        @$secondary_controls = @$controls.clone(true)
+        @$el.before(@$secondary_controls)
+      else
+        @$el[@append_controls](@$controls)
     createNextPrev: ->
       @$next = $("<li />")
         .addClass("#{@name}_next")
@@ -56,7 +66,7 @@
       @$controls.find("ul").append(@$next).prepend(@$prev)
     navigateTo: (page) ->
       idx = @per_page * (page - 1)
-      @$controls
+      @getAllControls()
         .find("li.#{@name}_page").removeClass("#{@name}_active")
         .eq(page - 1).addClass("#{@name}_active")
       @$el
@@ -76,7 +86,7 @@
         @navigateTo(@current_page - 1)
     refresh: ->
       p = $(this).data(pagify.name)
-      p.$controls.off(".#{p.name}").remove()
+      p.getAllControls().off(".#{p.name}").remove()
       p.init()
     init: ->
       @total_pages = @countPages()

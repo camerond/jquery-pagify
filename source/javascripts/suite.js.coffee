@@ -81,6 +81,22 @@
     tester.checkActivePage(3)
     tester.checkItems('11,12,13,14,15')
 
+  test "append controls before element only", ->
+    $t = tester.init(
+      append_controls: "before"
+    )
+    $t.prev().shouldBe(".pagify_controls")
+    equal $t.next().length, 0, "no controls after element"
+
+  test "append controls both places", ->
+    $t = tester.init(
+      append_controls: "both"
+    )
+    $t.prev().shouldBe(".pagify_controls")
+    $t.next().shouldBe(".pagify_controls")
+
+  module "Methods"
+
   test "refresh method", ->
     $t = tester.init({}, 10)
     $t.append($("<div />").text("Item Number 11"))
