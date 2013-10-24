@@ -8,6 +8,19 @@ Call on the element containing elements to be paginated.
 
 A `<nav>` element containing a `<ul>` to navigate through the pages will be inserted in the DOM directly after said element.
 
+Example generated markup:
+
+```html
+<nav class="pagify_controls">
+  <ul>
+    <li><a href="#" class="pagify_prev">prev</a></li>
+    <li><a href="#" class="pagify_page pagify_active">1</a></li>
+    <li><a href="#" class="pagify_page">2</a></li>
+    <li><a href="#" class="pagify_next">next</a></li>
+  </ul>
+</nav>
+````
+
 ## Options
 
 ```javascript
